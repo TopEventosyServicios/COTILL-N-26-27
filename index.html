@@ -21,6 +21,14 @@
     @media (min-width:760px){.screen{aspect-ratio:16/9;max-height:none}.screen video{object-fit:cover}.collage{gap:11px}}
     @media(max-width:560px){.page{padding-left:12px;padding-right:12px}.sub,.year{letter-spacing:.3em}.claim{font-size:14px}.ticks{font-size:10px}.p1,.p2,.p3,.p4,.p5,.p6,.p7,.p8{grid-column:span 6;height:130px}.p1,.p5{height:165px}.p7,.p8{height:145px}}
     @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}.broadcast.on,.collageWrap.on,.photo{animation:none!important}.photo{opacity:1;transform:none}}
+
+    .discover{position:relative;overflow:hidden;isolation:isolate;min-height:56px;padding:15px 28px;max-width:100%;border:1px solid #ffe4a0;background:linear-gradient(110deg,#d9a231,#ffe9a9 48%,#e5b54f);color:#211302;font-size:13px;font-weight:850;letter-spacing:.13em;box-shadow:0 0 18px #f4c45f88,0 0 42px #efb23d55,inset 0 1px 0 #fff6d4;animation:goldGlow 2.4s ease-in-out infinite;transition:transform .2s}
+    .discover::before{content:"";position:absolute;inset:-70% auto -70% -55%;width:35%;background:linear-gradient(90deg,transparent,#fff9dcbb,transparent);transform:rotate(22deg);animation:goldShine 3.8s ease-in-out infinite;pointer-events:none;z-index:-1}
+    .discover:hover{background:linear-gradient(110deg,#efbb51,#fff1c4 48%,#f5c76a);transform:translateY(-2px)}.discover:active{transform:translateY(0)}.discover:focus-visible{outline:3px solid #fff5d6;outline-offset:5px}
+    .invitation{font-size:clamp(12px,2.3vw,16px);color:#e4c58a;letter-spacing:.09em;line-height:1.6;margin-top:22px}
+    @keyframes goldGlow{50%{box-shadow:0 0 27px #ffd878aa,0 0 58px #efb23d77,inset 0 1px 0 #fff6d4}}
+    @keyframes goldShine{0%,25%{left:-55%}65%,100%{left:135%}}
+    @media(prefers-reduced-motion:reduce){.discover,.discover::before{animation:none!important}}
   </style>
 </head>
 <body>
@@ -37,7 +45,7 @@
 
     <div class="claim">Vuelve el <strong>verdadero</strong> cotillón de fin de año</div>
     <div class="instruction">Sintoniza la frecuencia</div>
-    <div class="soundrow"><button id="soundBtn" class="pill" type="button">Activar sonido</button></div>
+    <div class="soundrow"><button id="soundBtn" class="pill" type="button" aria-pressed="false">Activar sonido</button></div>
 
     <section class="tuner" aria-label="Sintonizador de frecuencia">
       <div id="freqRead" class="freq" aria-live="polite">2025</div>
@@ -50,38 +58,43 @@
 
     <section id="broadcast" class="broadcast" aria-label="Transmisión 2027">
       <div class="screen">
-        <video id="video1" muted playsinline preload="metadata" src="videos/video-1.mp4"></video>
-        <video id="video2" muted playsinline preload="metadata" src="videos/video-2.mp4"></video>
+        <video id="video1" muted playsinline preload="metadata" src="video-1.mp4"></video>
+        <video id="video2" muted playsinline preload="metadata" src="video-2.mp4"></video>
+        <video id="video3" muted playsinline preload="metadata" src="video-3.mp4"></video>
         <div class="videoShade"></div>
         <div class="videoLabel">Estás escuchando la frecuencia 2027</div>
       </div>
-      <div id="mixText" class="mix">Voz en off protagonista · música al fondo</div>
-      <div class="cta"><button id="discoverBtn" class="pill" type="button">Descubre el cotillón</button></div>
+      <div class="cta"><button id="discoverBtn" class="pill discover" aria-expanded="false" aria-controls="collageWrap" type="button">Descubre el cotillón</button></div>
 
       <div id="collageWrap" class="collageWrap">
         <div class="collageTitle">El verdadero cotillón vuelve</div>
         <div class="collage">
-          <div class="photo p1"><img data-src="fotos/foto-1.jpg" alt="Ambiente del cotillón"></div>
-          <div class="photo p2"><img data-src="fotos/foto-2.jpg" alt="Ambiente del cotillón"></div>
-          <div class="photo p3"><img data-src="fotos/foto-3.jpg" alt="Ambiente del cotillón"></div>
-          <div class="photo p4"><img data-src="fotos/foto-4.jpg" alt="Ambiente del cotillón"></div>
-          <div class="photo p5"><img data-src="fotos/foto-5.jpg" alt="Ambiente del cotillón"></div>
-          <div class="photo p6"><img data-src="fotos/foto-6.jpg" alt="Ambiente del cotillón"></div>
-          <div class="photo p7"><img data-src="fotos/foto-7.jpg" alt="Ambiente del cotillón"></div>
-          <div class="photo p8"><img data-src="fotos/foto-8.jpg" alt="Ambiente del cotillón"></div>
+          <div class="photo p1"><img data-src="foto-1.jpg" alt="Ambiente del cotillón"></div>
+          <div class="photo p2"><img data-src="foto-2.jpg" alt="Ambiente del cotillón"></div>
+          <div class="photo p3"><img data-src="foto-3.jpg" alt="Ambiente del cotillón"></div>
+          <div class="photo p4"><img data-src="foto-4.jpg" alt="Ambiente del cotillón"></div>
+          <div class="photo p5"><img data-src="foto-5.jpg" alt="Ambiente del cotillón"></div>
+          <div class="photo p6"><img data-src="foto-6.jpg" alt="Ambiente del cotillón"></div>
+          <div class="photo p7"><img data-src="foto-7.jpg" alt="Ambiente del cotillón"></div>
+          <div class="photo p8"><img data-src="foto-8.jpg" alt="Ambiente del cotillón"></div>
+          <div class="photo p1" style="animation-delay:0.85s"><img data-src="foto-9.jpg" alt="Ambiente del cotillón" decoding="async"></div>
+          <div class="photo p2" style="animation-delay:0.95s"><img data-src="foto-10.jpg" alt="Ambiente del cotillón" decoding="async"></div>
+          <div class="photo p3" style="animation-delay:1.05s"><img data-src="foto-11.jpg" alt="Ambiente del cotillón" decoding="async"></div>
+          <div class="photo p4" style="animation-delay:1.15s"><img data-src="foto-12.jpg" alt="Ambiente del cotillón" decoding="async"></div>
+          <div class="photo p5" style="animation-delay:1.25s"><img data-src="foto-13.jpg" alt="Ambiente del cotillón" decoding="async"></div>
+          <div class="photo p6" style="animation-delay:1.35s"><img data-src="foto-14.jpg" alt="Ambiente del cotillón" decoding="async"></div>
         </div>
         <div class="final">Estad atentos<strong>Nos vemos muy pronto.</strong></div>
       </div>
     </section>
 
-    <div class="hint">Fuera de 2027 hay interferencias. En 2027 la señal queda limpia.</div>
+    <div class="hint invitation">¿ESTÁIS LISTOS PARA VIVIR UNA NOCHE ÚNICA?</div>
 
-    <audio id="voice" class="hidden-audio" preload="none" src="audio/voz.mp3"></audio>
-    <audio id="music" class="hidden-audio" preload="none" loop src="audio/musica.mp3"></audio>
   </div>
 </main>
 <script>
 (() => {
+  'use strict';
   const dial = document.getElementById('dial');
   const freqRead = document.getElementById('freqRead');
   const statusMain = document.getElementById('statusMain');
@@ -89,106 +102,257 @@
   const soundBtn = document.getElementById('soundBtn');
   const signal = document.getElementById('signal');
   const broadcast = document.getElementById('broadcast');
-  const video1 = document.getElementById('video1');
-  const video2 = document.getElementById('video2');
-  const voice = document.getElementById('voice');
-  const music = document.getElementById('music');
-  const mixText = document.getElementById('mixText');
+  const videos = [1, 2, 3].map(i => document.getElementById('video' + i));
   const discoverBtn = document.getElementById('discoverBtn');
   const collageWrap = document.getElementById('collageWrap');
   const collageImgs = [...collageWrap.querySelectorAll('img[data-src]')];
   const bars = [];
-
-  for (let i=0;i<31;i++) {
-    const b = document.createElement('span');
-    b.className='bar'; b.style.height=(8+(i%7)*3)+'px'; signal.appendChild(b); bars.push(b);
+  for (let i = 0; i < 31; i++) {
+    const bar = document.createElement('span');
+    bar.className = 'bar';
+    signal.appendChild(bar);
+    bars.push(bar);
   }
 
-  let audioCtx=null, noiseGain=null, soundOn=false, locked=false, currentVideo=1, voiceEndTimer=null;
+  // Preload the complete supplied audio; never mix in the previous soundtrack.
+  const track = {url: 'audio-2027.mp3?v=20261008-final', buffer: null, pending: null, error: false};
+  let ctx = null, noiseGain = null, audioSource = null;
+  let soundOn = false, tuned = false, transmitting = false;
+  let currentVideo = 0, engineError = false;
 
-  function ensureNoise(){
-    if(audioCtx) return;
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const len = audioCtx.sampleRate*2;
-    const buffer = audioCtx.createBuffer(1,len,audioCtx.sampleRate);
+  function ensureAudio() {
+    if (ctx) return;
+    const AudioEngine = window.AudioContext || window.webkitAudioContext;
+    if (!AudioEngine) throw new Error('Audio no disponible');
+    ctx = new AudioEngine();
+    const buffer = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
     const data = buffer.getChannelData(0);
-    for(let i=0;i<len;i++) data[i]=Math.random()*2-1;
-    const src = audioCtx.createBufferSource(); src.buffer=buffer; src.loop=true;
-    const filter = audioCtx.createBiquadFilter(); filter.type='bandpass'; filter.frequency.value=1800; filter.Q.value=.65;
-    noiseGain = audioCtx.createGain(); noiseGain.gain.value=0;
-    src.connect(filter).connect(noiseGain).connect(audioCtx.destination); src.start();
+    for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+    source.loop = true;
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'bandpass'; filter.frequency.value = 1800; filter.Q.value = .65;
+    noiseGain = ctx.createGain(); noiseGain.gain.value = 0;
+    source.connect(filter).connect(noiseGain).connect(ctx.destination);
+    source.start();
+    ctx.addEventListener('statechange', () => {
+      if (ctx.state === 'running') engineError = false;
+      syncAudio();
+      renderStatus();
+    });
   }
 
-  function setNoise(v){ if(noiseGain && audioCtx){ noiseGain.gain.cancelScheduledValues(audioCtx.currentTime); noiseGain.gain.setTargetAtTime(v,audioCtx.currentTime,.035); } }
-
-  function activateVideo(which){
-    currentVideo=which;
-    video1.classList.toggle('active',which===1);
-    video2.classList.toggle('active',which===2);
+  function setNoise(value) {
+    if (!noiseGain) return;
+    noiseGain.gain.cancelScheduledValues(ctx.currentTime);
+    // Silence immediately on 2027, without residual interference.
+    if (value === 0) noiseGain.gain.setValueAtTime(0, ctx.currentTime);
+    else noiseGain.gain.setTargetAtTime(value, ctx.currentTime, .035);
   }
 
-  async function playTransmission(){
-    activateVideo(1);
-    video1.currentTime=0; video2.currentTime=0;
-    voice.currentTime=0; music.currentTime=0;
-    music.volume=.12; voice.volume=1;
-    try { await Promise.allSettled([video1.play(), voice.play(), music.play()]); } catch(e) {}
-    clearTimeout(voiceEndTimer);
-    voiceEndTimer=setTimeout(()=>{
-      if(!locked) return;
-      mixText.textContent='La voz termina · la música sube';
-      const start=music.volume, target=.82, steps=18, delta=(target-start)/steps; let n=0;
-      const fade=setInterval(()=>{ if(!locked){clearInterval(fade);return;} n++; music.volume=Math.min(target,start+delta*n); if(n>=steps)clearInterval(fade); },40);
-    }, 5330);
+  function loadAudio() {
+    if (track.buffer || track.pending || !ctx) return;
+    track.error = false;
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 25000);
+    track.pending = fetch(track.url, {signal: controller.signal})
+      .then(response => {
+        if (!response.ok) throw new Error('Audio no cargado');
+        return response.arrayBuffer();
+      })
+      .then(data => ctx.decodeAudioData(data))
+      .then(buffer => { track.buffer = buffer; })
+      .catch(() => { track.error = true; })
+      .finally(() => {
+        clearTimeout(timeout);
+        track.pending = null;
+        syncAudio();
+        renderStatus();
+      });
   }
 
-  function stopTransmission(){
-    clearTimeout(voiceEndTimer);
-    [video1,video2,voice,music].forEach(m=>{try{m.pause();m.currentTime=0;}catch(e){}});
-    activateVideo(1); mixText.textContent='Voz en off protagonista · música al fondo';
-  }
 
-  video1.addEventListener('ended',()=>{ if(!locked)return; activateVideo(2); video2.currentTime=0; video2.play().catch(()=>{}); });
-  video2.addEventListener('ended',()=>{ if(!locked)return; activateVideo(1); video1.currentTime=0; video1.play().catch(()=>{}); });
-
-  async function toggleSound(){
-    ensureNoise(); if(audioCtx.state==='suspended') await audioCtx.resume();
-    soundOn=!soundOn; soundBtn.textContent=soundOn?'Silenciar sonido':'Activar sonido';
-    if(!soundOn){ setNoise(0); stopTransmission(); locked=false; }
-    update();
-  }
-
-  function update(){
-    const v=Math.max(2023,Math.min(2029,Number(dial.value)||2025));
-    const d=Math.abs(v-2027);
-    freqRead.textContent=v.toFixed(2).replace(/\.00$/,'');
-    const strength=Math.max(0,1-Math.min(d/1.6,1));
-    bars.forEach((b,i)=>{const wave=(Math.sin(i*.87+v*1.9)+1)/2;b.style.height=(8+wave*34*strength+Math.random()*4)+'px';b.style.opacity=String(.22+.78*strength);});
-
-    if(d<=.075){
-      dial.value='2027'; freqRead.textContent='2027';
-      statusMain.innerHTML='Estás escuchando la frecuencia <b>2027</b>';
-      statusSub.textContent='Señal limpia · transmisión encontrada.';
-      broadcast.classList.add('on');
-      if(soundOn){ setNoise(0); if(!locked){locked=true; playTransmission();} }
-    } else {
-      statusMain.textContent=d<.45?'La señal se está perdiendo…':'Buscando señal…';
-      statusSub.textContent=d<.45?'Vuelve a 2027.':'Ruido blanco · acércate a 2027.';
-      broadcast.classList.remove('on'); collageWrap.classList.remove('on'); discoverBtn.textContent='Descubre el cotillón';
-      if(soundOn) setNoise(Math.max(.08,Math.min(.15,.09+d*.02)));
-      if(locked){ locked=false; stopTransmission(); }
+  // Invoke resume() and start a silent sample INSIDE the original user gesture.
+  // No fetch, await or timer is allowed before this mobile unlock.
+  function resumeAudio() {
+    if (!soundOn || !ctx || document.hidden) return;
+    if (ctx.state === 'running') { engineError = false; syncAudio(); return; }
+    try {
+      const resumed = ctx.resume();
+      const silent = ctx.createBufferSource();
+      silent.buffer = ctx.createBuffer(1, 1, ctx.sampleRate);
+      silent.connect(ctx.destination);
+      silent.onended = () => silent.disconnect();
+      silent.start();
+      Promise.resolve(resumed).then(() => {
+        engineError = ctx.state !== 'running';
+      }).catch(() => { engineError = true; }).finally(() => {
+        syncAudio();
+        renderStatus();
+      });
+    } catch (_) {
+      engineError = true;
+      renderStatus();
     }
   }
 
-  discoverBtn.addEventListener('click',()=>{
-    collageImgs.forEach(img=>{if(!img.src) img.src=img.dataset.src;});
-    collageWrap.classList.add('on'); discoverBtn.textContent='COTILLÓN 2027';
-    setTimeout(()=>collageWrap.scrollIntoView({behavior:'smooth',block:'start'}),120);
+  function stopAudio() {
+    transmitting = false;
+    if (audioSource) {
+      audioSource.onended = null;
+      try { audioSource.stop(); } catch (_) { /* Already ended. */ }
+      audioSource.disconnect();
+      audioSource = null;
+    }
+  }
+
+  function syncAudio() {
+    if (!ctx) return;
+    if (!soundOn || document.hidden || ctx.state !== 'running') { setNoise(0); return; }
+    if (!tuned) {
+      const distance = Math.abs(Number(dial.value) - 2027);
+      setNoise(Math.max(.08, Math.min(.15, .09 + distance * .02)));
+      return;
+    }
+    setNoise(0);
+    if (!track.buffer || transmitting) return;
+    try {
+      const source = ctx.createBufferSource();
+      source.buffer = track.buffer;
+      source.connect(ctx.destination);
+      audioSource = source;
+      transmitting = true;
+      source.onended = () => {
+        if (audioSource !== source || !transmitting) return;
+        source.disconnect();
+        // Leave the supplied audio ending intact. Re-tuning restarts it.
+        renderStatus();
+      };
+      source.start();
+    } catch (_) {
+      stopAudio(); engineError = true;
+      renderStatus();
+    }
+  }
+
+  function playVideo(index, reset = false) {
+    currentVideo = index;
+    videos.forEach((video, i) => {
+      video.classList.toggle('active', i === index);
+      if (i !== index) video.pause();
+    });
+    const video = videos[index];
+    video.muted = true;
+    if (reset) { try { video.currentTime = 0; } catch (_) {} }
+    if (!document.hidden) video.play().catch(() => {
+      // A subsequent touch or page return retries a browser-interrupted video.
+    });
+  }
+  videos.forEach((video, index) => {
+    video.addEventListener('ended', () => {
+      if (tuned) playVideo((index + 1) % videos.length, true);
+    });
+    video.addEventListener('error', () => {
+      if (!tuned || currentVideo !== index) return;
+      const next = videos.findIndex((item, i) => i !== index && !item.error);
+      if (next >= 0) playVideo(next, true);
+    });
   });
-  soundBtn.addEventListener('click',toggleSound);
-  dial.addEventListener('input',update);
+
+  function needsHelp() {
+    return engineError || !ctx || ctx.state !== 'running' || track.error;
+  }
+
+  function renderStatus() {
+    soundBtn.setAttribute('aria-pressed', String(soundOn));
+    soundBtn.textContent = !soundOn ? 'Activar sonido' :
+      (track.error ? 'Reintentar sonido' :
+        (engineError || !ctx || ctx.state !== 'running' ? 'Reactivar sonido' : 'Silenciar sonido'));
+    if (tuned) {
+      statusMain.innerHTML = 'Frecuencia <b>2027</b> · ¡La noche empieza aquí!';
+      statusSub.textContent = !soundOn ? 'Pulsa Activar sonido para escuchar.' :
+        (engineError || !ctx || ctx.state !== 'running' ? 'Pulsa Reactivar sonido para seguir escuchando.' :
+          (track.error ? 'No se ha cargado el audio. Pulsa Reintentar sonido.' :
+            (!track.buffer ? 'Preparando el audio… empezará en cuanto esté listo.' :
+              '¡Bienvenidos a una noche única!')));
+    } else {
+      statusMain.textContent = 'Buscando señal…';
+      statusSub.textContent = soundOn && needsHelp() ?
+        (track.error ? 'Pulsa Reintentar sonido y acércate a 2027.' : 'Pulsa Reactivar sonido y acércate a 2027.') : 'ACÉRCATE A 2027';
+    }
+  }
+
+  function update() {
+    const value = Math.max(2023, Math.min(2029, Number(dial.value) || 2025));
+    const distance = Math.abs(value - 2027);
+    const wasTuned = tuned;
+    tuned = distance <= .075;
+    if (tuned) dial.value = '2027';
+    freqRead.textContent = tuned ? '2027' : value.toFixed(2).replace(/\.00$/, '');
+    const strength = Math.max(0, 1 - Math.min(distance / 1.6, 1));
+    bars.forEach((bar, i) => {
+      const wave = (Math.sin(i * .87 + value * 1.9) + 1) / 2;
+      bar.style.height = (8 + wave * 34 * strength + Math.random() * 4) + 'px';
+      bar.style.opacity = String(.22 + .78 * strength);
+    });
+    broadcast.classList.toggle('on', tuned);
+    if (tuned && !wasTuned) playVideo(0, true);
+    if (!tuned && wasTuned) {
+      stopAudio();
+      videos.forEach(video => { video.pause(); try { video.currentTime = 0; } catch (_) {} });
+      collageWrap.classList.remove('on');
+      discoverBtn.textContent = 'Descubre el cotillón';
+      discoverBtn.setAttribute('aria-expanded', 'false');
+    }
+    syncAudio();
+    renderStatus();
+  }
+
+  function toggleSound() {
+    if (soundOn && !needsHelp()) {
+      soundOn = false;
+      stopAudio(); setNoise(0); renderStatus(); return;
+    }
+    soundOn = true;
+    engineError = false;
+    try { ensureAudio(); resumeAudio(); loadAudio(); }
+    catch (_) { engineError = true; }
+    syncAudio(); renderStatus();
+  }
+
+  function recover() {
+    if (soundOn) resumeAudio();
+    if (tuned && videos[currentVideo].paused) playVideo(currentVideo);
+  }
+  discoverBtn.addEventListener('click', () => {
+    collageImgs.forEach(img => { if (!img.getAttribute('src')) img.src = img.dataset.src; });
+    collageWrap.classList.add('on');
+    discoverBtn.textContent = 'COTILLÓN 2027';
+    discoverBtn.setAttribute('aria-expanded', 'true');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setTimeout(() => collageWrap.scrollIntoView({behavior: reducedMotion ? 'auto' : 'smooth', block: 'start'}), 120);
+  });
+  soundBtn.addEventListener('click', toggleSound);
+  dial.addEventListener('input', () => { if (soundOn) resumeAudio(); update(); });
+  dial.addEventListener('change', () => { if (soundOn) resumeAudio(); update(); });
+  dial.addEventListener('pointerdown', recover);
+  dial.addEventListener('keydown', recover);
+  discoverBtn.addEventListener('pointerdown', recover);
+  window.addEventListener('pageshow', recover);
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      videos.forEach(video => video.pause());
+      if (ctx && ctx.state === 'running') {
+        ctx.suspend().then(() => { if (!document.hidden) recover(); }).catch(() => {});
+      }
+    } else recover();
+    renderStatus();
+  });
+  try { ensureAudio(); loadAudio(); } catch (_) { engineError = true; }
   update();
 })();
+
 </script>
 </body>
 </html>
