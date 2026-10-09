@@ -30,6 +30,7 @@
     @keyframes goldShine{0%,25%{left:-55%}65%,100%{left:135%}}
     @media(prefers-reduced-motion:reduce){.discover,.discover::before{animation:none!important}}
     .screen.landscape{max-width:820px;aspect-ratio:16/9}
+    [hidden]{display:none!important}.audioPanel{max-width:680px;margin:14px auto 0;text-align:center}.audioPanel audio{width:100%;max-width:420px}.audioHelp{font-size:12px;line-height:1.6;color:#dbc9a8;margin-top:10px}.audioEnd{margin:18px auto;text-align:center;color:#e4c58a;font-size:13px;line-height:1.6}.replaySound{margin:12px auto 0;display:block;min-height:46px}.final .replaySound{letter-spacing:.13em}
   </style>
 </head>
 <body>
@@ -47,6 +48,10 @@
     <div class="instruction">Sintoniza la frecuencia</div>
     <div class="soundrow"><button id="soundBtn" class="pill" type="button" aria-pressed="false">Activar sonido</button></div>
 
+    <div id="audioPanel" class="audioPanel" hidden>
+      <audio id="signalAudio" preload="auto" playsinline webkit-playsinline src="audio-2027-instagram.mp3?v=instagram-native-v3"></audio>
+      <div class="audioHelp">Toca Reactivar sonido o usa el reproductor. Si Instagram sigue bloqueando el sonido, abre esta web desde su menú ··· → Abrir en el navegador.</div>
+    </div>
     <section class="tuner" aria-label="Sintonizador de frecuencia">
       <div id="freqRead" class="freq" aria-live="polite">2025</div>
       <label for="dial" style="position:absolute;left:-9999px">Selecciona la frecuencia</label>
@@ -66,6 +71,9 @@
       </div>
       <div class="cta"><button id="discoverBtn" class="pill discover" aria-expanded="false" aria-controls="collageWrap" type="button">Descubre el cotillón</button></div>
 
+      <div id="audioEnd" class="audioEnd" hidden>¡La noche te espera!<br>Vuelve a escuchar la señal.
+        <button class="pill discover replaySound" type="button" hidden>Reactivar sonido</button>
+      </div>
       <div id="collageWrap" class="collageWrap">
         <div class="collage">
           <div class="photo" data-ratio="1.6282225237"><img data-src="foto-1.jpg" width="1200" height="737" style="left:0;top:0.00000000%;width:100%;height:100.00000000%" alt="Ambiente del cotillón, foto 1" loading="eager" decoding="async"></div>
@@ -92,7 +100,7 @@
           <div class="photo" data-ratio="1.7777777778"><img data-src="foto-22.jpg" width="1600" height="900" style="left:0;top:0.00000000%;width:100%;height:100.00000000%" alt="Ambiente del cotillón, foto 22" loading="eager" decoding="async"></div>
           <div class="photo" data-ratio="0.5625000000"><img data-src="foto-23.jpg" width="900" height="1600" style="left:0;top:0.00000000%;width:100%;height:100.00000000%" alt="Ambiente del cotillón, foto 23" loading="eager" decoding="async"></div>
         </div>
-        <div class="final">Estad atentos<strong>Nos vemos muy pronto.</strong></div>
+        <div class="final">Estad atentos<strong>Nos vemos muy pronto.</strong><button class="pill discover replaySound" type="button" hidden>Reactivar sonido</button></div>
       </div>
     </section>
 
@@ -125,136 +133,128 @@
     bars.push(bar);
   }
 
-  // Preload the complete supplied audio; never mix in the previous soundtrack.
-  const track = {url: 'audio-2027-corregido.mp3?v=20261008-volumen-v2', buffer: null, pending: null, error: false};
-  let ctx = null, noiseGain = null, audioSource = null;
+  // One native media element stays audible from the original button gesture.
+  // The first six seconds contain radio static; the complete supplied track
+  // follows. Tuning seeks the already-playing element instead of starting a
+  // second asynchronous Web Audio source inside an embedded browser.
+  const radio = document.getElementById('signalAudio');
+  const audioPanel = document.getElementById('audioPanel');
+  const replayButtons = [...document.querySelectorAll('.replaySound')];
+  const audioEnd = document.getElementById('audioEnd');
+  const TRACK_START = 6;
+  const NOISE_REWIND = 2.5;
   let soundOn = false, tuned = false, transmitting = false;
-  let currentVideo = 0, engineError = false;
+  let currentVideo = 0, engineError = false, audioFinished = false;
+  let playRequest = 0, pendingSeek = null, waitingForPlay = false;
 
-  // On browsers that expose AudioSession, request the media playback category.
   function configurePlayback() {
-    try {
-      if (navigator.audioSession) navigator.audioSession.type = 'playback';
-    } catch (_) { /* Use the browser default when unsupported. */ }
+    try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; }
+    catch (_) { /* Native media playback still works without AudioSession. */ }
   }
-
-  function ensureAudio() {
-    if (ctx) return;
+  function seekRadio(position) {
+    pendingSeek = position;
+    try {
+      radio.currentTime = position;
+      if (radio.readyState >= 1) pendingSeek = null;
+    } catch (_) { /* loadedmetadata applies a seek requested before loading. */ }
+  }
+  function setNoise() { /* Static and the recording use the same native player. */ }
+  function stopAudio() {
+    ++playRequest;
+    soundOn = false;
+    waitingForPlay = false;
+    transmitting = false;
+    radio.pause();
+  }
+  function attemptPlay(restart = false) {
+    if (!soundOn || document.hidden) return;
+    const request = ++playRequest;
     configurePlayback();
-    const AudioEngine = window.AudioContext || window.webkitAudioContext;
-    if (!AudioEngine) throw new Error('Audio no disponible');
-    ctx = new AudioEngine({latencyHint: 'playback'});
-    const buffer = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
-    const source = ctx.createBufferSource();
-    source.buffer = buffer;
-    source.loop = true;
-    const filter = ctx.createBiquadFilter();
-    filter.type = 'bandpass'; filter.frequency.value = 1800; filter.Q.value = .65;
-    noiseGain = ctx.createGain(); noiseGain.gain.value = 0;
-    source.connect(filter).connect(noiseGain).connect(ctx.destination);
-    source.start();
-    ctx.addEventListener('statechange', () => {
-      if (ctx.state === 'running') engineError = false;
-      syncAudio();
+    engineError = false;
+    waitingForPlay = true;
+    radio.muted = false;
+    if (radio.error) {
+      radio.load();
+      restart = true;
+    }
+    if (restart || radio.ended || audioFinished) {
+      audioFinished = false;
+      seekRadio(tuned ? TRACK_START : 0);
+    }
+    // This call must run synchronously in click/touch/keyboard handlers.
+    // Loading promises and metadata callbacks must never precede it.
+    let result;
+    try { result = radio.play(); }
+    catch (_) { result = Promise.reject(new Error('Audio bloqueado')); }
+    Promise.resolve(result).then(() => {
+      if (request !== playRequest || !soundOn) return;
+      waitingForPlay = false;
+      engineError = false;
+      transmitting = tuned && !radio.paused;
+      maintainNoise();
+      renderStatus();
+    }).catch(() => {
+      if (request !== playRequest || !soundOn) return;
+      waitingForPlay = false;
+      engineError = true;
+      transmitting = false;
       renderStatus();
     });
+    renderStatus();
   }
-
-  function setNoise(value) {
-    if (!noiseGain) return;
-    noiseGain.gain.cancelScheduledValues(ctx.currentTime);
-    // Silence immediately on 2027, without residual interference.
-    if (value === 0) noiseGain.gain.setValueAtTime(0, ctx.currentTime);
-    else noiseGain.gain.setTargetAtTime(value, ctx.currentTime, .035);
-  }
-
-  function loadAudio() {
-    if (track.buffer || track.pending || !ctx) return;
-    track.error = false;
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 25000);
-    track.pending = fetch(track.url, {signal: controller.signal})
-      .then(response => {
-        if (!response.ok) throw new Error('Audio no cargado');
-        return response.arrayBuffer();
-      })
-      .then(data => ctx.decodeAudioData(data))
-      .then(buffer => { track.buffer = buffer; })
-      .catch(() => { track.error = true; })
-      .finally(() => {
-        clearTimeout(timeout);
-        track.pending = null;
-        syncAudio();
-        renderStatus();
-      });
-  }
-
-
-  // Invoke resume() and start a silent sample INSIDE the original user gesture.
-  // No fetch, await or timer is allowed before this mobile unlock.
   function resumeAudio() {
-    if (!soundOn || !ctx || document.hidden) return;
-    configurePlayback();
-    if (ctx.state === 'running') { engineError = false; syncAudio(); return; }
-    try {
-      const resumed = ctx.resume();
-      const silent = ctx.createBufferSource();
-      silent.buffer = ctx.createBuffer(1, 1, ctx.sampleRate);
-      silent.connect(ctx.destination);
-      silent.onended = () => silent.disconnect();
-      silent.start();
-      Promise.resolve(resumed).then(() => {
-        engineError = ctx.state !== 'running';
-      }).catch(() => { engineError = true; }).finally(() => {
-        syncAudio();
-        renderStatus();
-      });
-    } catch (_) {
-      engineError = true;
-      renderStatus();
-    }
+    if (soundOn && !audioFinished && !engineError && radio.paused && !waitingForPlay) attemptPlay(false);
   }
-
-  function stopAudio() {
-    transmitting = false;
-    if (audioSource) {
-      audioSource.onended = null;
-      try { audioSource.stop(); } catch (_) { /* Already ended. */ }
-      audioSource.disconnect();
-      audioSource = null;
-    }
-  }
-
   function syncAudio() {
-    if (!ctx) return;
-    if (!soundOn || document.hidden || ctx.state !== 'running') { setNoise(0); return; }
-    if (!tuned) {
-      const distance = Math.abs(Number(dial.value) - 2027);
-      setNoise(Math.max(.08, Math.min(.15, .09 + distance * .02)));
-      return;
+    if (!soundOn || document.hidden || audioFinished) return;
+    if (tuned && !transmitting) {
+      if (pendingSeek === null && radio.currentTime < TRACK_START) seekRadio(TRACK_START);
+      transmitting = !radio.paused;
     }
-    setNoise(0);
-    if (!track.buffer || transmitting) return;
-    try {
-      const source = ctx.createBufferSource();
-      source.buffer = track.buffer;
-      source.connect(ctx.destination);
-      audioSource = source;
-      transmitting = true;
-      source.onended = () => {
-        if (audioSource !== source || !transmitting) return;
-        source.disconnect();
-        // Leave the supplied audio ending intact. Re-tuning restarts it.
-        renderStatus();
-      };
-      source.start();
-    } catch (_) {
-      stopAudio(); engineError = true;
-      renderStatus();
-    }
+    maintainNoise();
   }
+  function maintainNoise() {
+    if (!soundOn || tuned || radio.paused || document.hidden) return;
+    // Rewind well before the six-second boundary. Native timeupdate and the
+    // short timer both guard the silent-to-song transition during radio mode.
+    if (radio.currentTime >= NOISE_REWIND) seekRadio(.04);
+  }
+  radio.addEventListener('loadedmetadata', () => {
+    if (pendingSeek !== null) seekRadio(pendingSeek);
+    else if (soundOn && tuned && radio.currentTime < TRACK_START) seekRadio(TRACK_START);
+    renderStatus();
+  });
+  radio.addEventListener('timeupdate', maintainNoise);
+  radio.addEventListener('playing', () => {
+    if (!soundOn) { radio.pause(); return; }
+    waitingForPlay = false;
+    engineError = false;
+    transmitting = tuned;
+    maintainNoise();
+    renderStatus();
+  });
+  radio.addEventListener('pause', () => {
+    transmitting = false;
+    if (soundOn && !document.hidden && !radio.ended && !audioFinished && !waitingForPlay) engineError = true;
+    renderStatus();
+  });
+  radio.addEventListener('error', () => {
+    if (!soundOn) return;
+    waitingForPlay = false;
+    engineError = true;
+    transmitting = false;
+    renderStatus();
+  });
+  radio.addEventListener('ended', () => {
+    ++playRequest;
+    waitingForPlay = false;
+    transmitting = false;
+    audioFinished = true;
+    engineError = false;
+    renderStatus();
+  });
+  setInterval(maintainNoise, 100);
+
 
   function playVideo(index, reset = false) {
     currentVideo = index;
@@ -289,27 +289,31 @@
   });
 
   function needsHelp() {
-    return engineError || !ctx || ctx.state !== 'running' || track.error;
+    return audioFinished || engineError || (soundOn && radio.paused && !waitingForPlay);
   }
-
   function renderStatus() {
-    soundBtn.setAttribute('aria-pressed', String(soundOn));
+    const blocked = soundOn && engineError;
+    const ended = audioFinished && tuned;
+    soundBtn.setAttribute('aria-pressed', String(soundOn && !audioFinished));
     soundBtn.textContent = !soundOn ? 'Activar sonido' :
-      (track.error ? 'Reintentar sonido' :
-        (engineError || !ctx || ctx.state !== 'running' ? 'Reactivar sonido' : 'Silenciar sonido'));
+      (ended || blocked || (radio.paused && !waitingForPlay) ? 'Reactivar sonido' :
+        (waitingForPlay ? 'Preparando sonido…' : 'Silenciar sonido'));
+    audioPanel.hidden = !blocked;
+    radio.controls = blocked;
+    audioEnd.hidden = !ended;
+    replayButtons.forEach(button => { button.hidden = !ended; });
     if (tuned) {
       statusMain.innerHTML = 'Frecuencia <b>2027</b> · ¡La noche empieza aquí!';
-      statusSub.textContent = !soundOn ? 'Pulsa Activar sonido para escuchar.' :
-        (engineError || !ctx || ctx.state !== 'running' ? 'Pulsa Reactivar sonido para seguir escuchando.' :
-          (track.error ? 'No se ha cargado el audio. Pulsa Reintentar sonido.' :
-            (!track.buffer ? 'Preparando el audio… empezará en cuanto esté listo.' :
-              '¡Bienvenidos a una noche única!')));
+      statusSub.textContent = ended ? '¡La noche te espera! Pulsa Reactivar sonido para volver a escuchar.' :
+        (!soundOn ? 'Pulsa Activar sonido para escuchar.' :
+          (blocked ? 'Toca Reactivar sonido para iniciar el audio.' :
+            (waitingForPlay ? 'Cargando la señal…' : '')));
     } else {
       statusMain.textContent = 'Buscando señal…';
-      statusSub.textContent = soundOn && needsHelp() ?
-        (track.error ? 'Pulsa Reintentar sonido y acércate a 2027.' : 'Pulsa Reactivar sonido y acércate a 2027.') : 'ACÉRCATE A 2027';
+      statusSub.textContent = blocked ? 'Toca Reactivar sonido y acércate a 2027.' : 'ACÉRCATE A 2027';
     }
   }
+
 
   function preparePhotos() {
     if (photoPreparation) return photoPreparation;
@@ -386,9 +390,16 @@
       bar.style.opacity = String(.22 + .78 * strength);
     });
     broadcast.classList.toggle('on', tuned);
-    if (tuned && !wasTuned) { playVideo(0, true); preparePhotos(); }
+    if (tuned && !wasTuned) {
+      audioFinished = false;
+      transmitting = false;
+      if (soundOn) { seekRadio(TRACK_START); if (radio.paused && !waitingForPlay && !engineError) attemptPlay(false); }
+      playVideo(0, true); preparePhotos();
+    }
     if (!tuned && wasTuned) {
-      stopAudio();
+      audioFinished = false;
+      transmitting = false;
+      if (soundOn) { seekRadio(0); if (radio.paused && !waitingForPlay && !engineError) attemptPlay(false); }
       videos.forEach(video => { video.pause(); try { video.currentTime = 0; } catch (_) {} });
       collageRequest++;
       discoverBtn.disabled = false;
@@ -401,21 +412,25 @@
   }
 
   function toggleSound() {
-    if (soundOn && !needsHelp()) {
-      soundOn = false;
-      stopAudio(); setNoise(0); renderStatus(); return;
+    if (soundOn && !needsHelp() && !waitingForPlay) {
+      stopAudio();
+      renderStatus();
+      return;
     }
+    const restart = !soundOn || audioFinished;
     soundOn = true;
-    engineError = false;
-    try { ensureAudio(); resumeAudio(); loadAudio(); }
-    catch (_) { engineError = true; }
-    syncAudio(); renderStatus();
+    attemptPlay(restart);
   }
-
+  function replaySound() {
+    soundOn = true;
+    audioFinished = false;
+    attemptPlay(true);
+  }
   function recover() {
-    if (soundOn) resumeAudio();
+    resumeAudio();
     if (tuned && videos[currentVideo].paused) playVideo(currentVideo);
   }
+
   discoverBtn.addEventListener('click', async () => {
     const request = ++collageRequest;
     discoverBtn.textContent = 'COTILLÓN 26/27';
@@ -445,16 +460,17 @@
   dial.addEventListener('keydown', recover);
   discoverBtn.addEventListener('pointerdown', recover);
   window.addEventListener('pageshow', recover);
+  replayButtons.forEach(button => button.addEventListener('click', replaySound));
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
+      ++playRequest;
+      waitingForPlay = false;
+      radio.pause();
       videos.forEach(video => video.pause());
-      if (ctx && ctx.state === 'running') {
-        ctx.suspend().then(() => { if (!document.hidden) recover(); }).catch(() => {});
-      }
     } else recover();
     renderStatus();
   });
-  try { ensureAudio(); loadAudio(); } catch (_) { engineError = true; }
+  configurePlayback();
   update();
 })();
 
