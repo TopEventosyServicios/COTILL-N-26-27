@@ -115,16 +115,24 @@
   }
 
   // Preload the complete supplied audio; never mix in the previous soundtrack.
-  const track = {url: 'audio-2027.mp3?v=20261008-final', buffer: null, pending: null, error: false};
+  const track = {url: 'audio-2027-corregido.mp3?v=20261008-volumen-v2', buffer: null, pending: null, error: false};
   let ctx = null, noiseGain = null, audioSource = null;
   let soundOn = false, tuned = false, transmitting = false;
   let currentVideo = 0, engineError = false;
 
+  // On browsers that expose AudioSession, request the media playback category.
+  function configurePlayback() {
+    try {
+      if (navigator.audioSession) navigator.audioSession.type = 'playback';
+    } catch (_) { /* Use the browser default when unsupported. */ }
+  }
+
   function ensureAudio() {
     if (ctx) return;
+    configurePlayback();
     const AudioEngine = window.AudioContext || window.webkitAudioContext;
     if (!AudioEngine) throw new Error('Audio no disponible');
-    ctx = new AudioEngine();
+    ctx = new AudioEngine({latencyHint: 'playback'});
     const buffer = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
     const data = buffer.getChannelData(0);
     for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
@@ -177,6 +185,7 @@
   // No fetch, await or timer is allowed before this mobile unlock.
   function resumeAudio() {
     if (!soundOn || !ctx || document.hidden) return;
+    configurePlayback();
     if (ctx.state === 'running') { engineError = false; syncAudio(); return; }
     try {
       const resumed = ctx.resume();
