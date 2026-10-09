@@ -14,13 +14,12 @@
     .claim{margin:26px auto 9px;max-width:680px;text-align:center;font-size:clamp(15px,3vw,22px);font-weight:650;letter-spacing:.08em;text-transform:uppercase}.claim strong{color:var(--gold)}.instruction{text-align:center;margin-top:23px;color:#cdbb98;letter-spacing:.29em;font-size:11px;text-transform:uppercase}
     .soundrow{display:flex;justify-content:center;margin-top:15px}.pill{min-height:46px;border:1px solid var(--gold2);border-radius:999px;background:transparent;color:#f3ead9;padding:0 22px;letter-spacing:.14em;text-transform:uppercase;font-size:11px;cursor:pointer;transition:.2s}.pill:hover{background:rgba(201,166,104,.1)}.pill:focus-visible,input:focus-visible{outline:2px solid #e0bb73;outline-offset:3px}
     .tuner{margin:20px auto 0;max-width:880px}.freq{text-align:center;font-family:Georgia,"Times New Roman",serif;font-size:36px;color:#e0bb73;margin-bottom:8px;min-height:44px}.range{width:100%;accent-color:var(--gold);min-height:44px;cursor:pointer}.ticks{display:flex;justify-content:space-between;gap:6px;font-size:12px;color:#918671;padding:0 6px}.ticks .hot{color:#e1bc74;font-weight:700}.signal{height:44px;display:flex;align-items:center;justify-content:center;gap:3px;margin:17px auto 0}.bar{width:3px;border-radius:6px;background:var(--gold2);opacity:.32;transition:height .1s,opacity .1s}.status{text-align:center;min-height:54px;margin-top:6px}.status-main{font-size:13px;letter-spacing:.24em;text-transform:uppercase}.status-main b{color:var(--gold)}.status-sub{font-size:12px;color:#9d927f;margin-top:8px}
-    .broadcast{display:none;margin:20px auto 0;max-width:820px}.broadcast.on{display:block;animation:fade .55s ease both}.screen{position:relative;overflow:hidden;border-radius:20px;border:1px solid rgba(215,179,110,.35);background:#000;aspect-ratio:9/16;max-height:680px;margin:0 auto}.screen video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:#000;opacity:0;transition:opacity .55s ease}.screen video.active{opacity:1}.videoShade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.05),transparent 55%,rgba(0,0,0,.52))}.videoLabel{position:absolute;left:12px;right:12px;bottom:14px;text-align:center;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#efe1c6;text-shadow:0 2px 8px #000}.mix{text-align:center;font-size:11px;color:#aa9e8a;margin-top:10px}.cta{display:flex;justify-content:center;margin-top:16px}
-    .collageWrap{display:none;margin-top:22px}.collageWrap.on{display:block;animation:fade .5s ease both}.collageTitle{text-align:center;margin-bottom:12px;font-family:Georgia,"Times New Roman",serif;font-size:clamp(22px,4vw,34px);color:#f4ead3}.collage{display:block;columns:3;column-gap:11px}.photo{display:inline-block;vertical-align:top;break-inside:avoid;page-break-inside:avoid;width:100%;margin:0 0 11px;overflow:hidden;border-radius:15px;border:1px solid rgba(215,179,110,.24);background:#16110b;opacity:1;transform:none;animation:photoIn .6s ease backwards;animation-delay:var(--photo-delay,0s)}.photo img{width:100%;height:auto;display:block;object-fit:contain}.final{margin:24px auto 0;text-align:center;letter-spacing:.24em;text-transform:uppercase;font-size:12px;color:#d9cdb5}.final strong{display:block;margin-top:7px;color:#f5ead5;font-size:14px}
+    .broadcast{display:none;margin:20px auto 0;max-width:820px}.broadcast.on{display:block;animation:fade .55s ease both}.screen{position:relative;overflow:hidden;border-radius:20px;border:1px solid rgba(215,179,110,.35);background:#000;aspect-ratio:9/16;width:100%;max-width:400px;margin:0 auto}.screen video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;opacity:0;transition:opacity .55s ease}.screen video.active{opacity:1}.videoShade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.05),transparent 55%,rgba(0,0,0,.52))}.videoLabel{position:absolute;left:12px;right:12px;bottom:14px;text-align:center;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:#efe1c6;text-shadow:0 2px 8px #000}.mix{text-align:center;font-size:11px;color:#aa9e8a;margin-top:10px}.cta{display:flex;justify-content:center;margin-top:16px}
+    .collageWrap{display:none;margin-top:22px}.collageWrap.on{display:block}.collageTitle{text-align:center;margin-bottom:12px;font-family:Georgia,"Times New Roman",serif;font-size:clamp(22px,4vw,34px);color:#f4ead3}.collage{display:block;width:100%;--collage-gap:10px}.collage-row{display:flex;gap:var(--collage-gap);width:100%;margin-bottom:var(--collage-gap)}.collage-row:last-child{margin-bottom:0}.photo{position:relative;min-width:0;overflow:hidden;border-radius:10px;background:transparent;border:0;opacity:1;transform:none}.photo img{position:absolute;display:block;max-width:none;object-fit:contain;image-orientation:from-image}.final{margin:24px auto 0;text-align:center;letter-spacing:.24em;text-transform:uppercase;font-size:12px;color:#d9cdb5}.final strong{display:block;margin-top:7px;color:#f5ead5;font-size:14px}
     .hint{text-align:center;margin-top:12px;color:#716a5f;font-size:11px}.hidden-audio{display:none}
     @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}@keyframes photoIn{from{opacity:0;transform:translateY(16px) scale(.96)}to{opacity:1;transform:none}}
-    @media (min-width:561px) and (max-width:759px){.collage{columns:2}}
-    @media (min-width:760px){.screen{aspect-ratio:16/9;max-height:none}.screen video{object-fit:cover}.collage{column-gap:11px}}
-    @media(max-width:560px){.page{padding-left:12px;padding-right:12px}.sub,.year{letter-spacing:.3em}.claim{font-size:14px}.ticks{font-size:10px}.collage{columns:2;column-gap:9px}.photo{margin-bottom:9px;border-radius:12px}}
+    @media (min-width:760px){}
+    @media(max-width:560px){.page{padding-left:12px;padding-right:12px}.sub,.year{letter-spacing:.3em}.claim{font-size:14px}.ticks{font-size:10px}.collage{--collage-gap:8px}.photo{border-radius:8px}}
     @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}.broadcast.on,.collageWrap.on,.photo{animation:none!important}.photo{opacity:1;transform:none}}
 
     .discover{position:relative;overflow:hidden;isolation:isolate;min-height:56px;padding:15px 28px;max-width:100%;border:1px solid #ffe4a0;background:linear-gradient(110deg,#d9a231,#ffe9a9 48%,#e5b54f);color:#211302;font-size:13px;font-weight:850;letter-spacing:.13em;box-shadow:0 0 18px #f4c45f88,0 0 42px #efb23d55,inset 0 1px 0 #fff6d4;animation:goldGlow 2.4s ease-in-out infinite;transition:transform .2s}
@@ -30,6 +29,7 @@
     @keyframes goldGlow{50%{box-shadow:0 0 27px #ffd878aa,0 0 58px #efb23d77,inset 0 1px 0 #fff6d4}}
     @keyframes goldShine{0%,25%{left:-55%}65%,100%{left:135%}}
     @media(prefers-reduced-motion:reduce){.discover,.discover::before{animation:none!important}}
+    .screen.landscape{max-width:820px;aspect-ratio:16/9}
   </style>
 </head>
 <body>
@@ -58,9 +58,9 @@
 
     <section id="broadcast" class="broadcast" aria-label="Transmisión 2027">
       <div class="screen">
-        <video id="video1" muted playsinline preload="metadata" src="video-1.mp4"></video>
-        <video id="video2" muted playsinline preload="metadata" src="video-2.mp4"></video>
-        <video id="video3" muted playsinline preload="metadata" src="video-3.mp4"></video>
+        <video id="video1" muted playsinline preload="metadata" src="video-1-mejorado.mp4"></video>
+        <video id="video2" muted playsinline preload="metadata" src="video-2-mejorado.mp4"></video>
+        <video id="video3" muted playsinline preload="metadata" src="video-3-mejorado.mp4"></video>
         <div class="videoShade"></div>
         <div class="videoLabel">Estás escuchando la frecuencia 2027</div>
       </div>
@@ -68,29 +68,29 @@
 
       <div id="collageWrap" class="collageWrap">
         <div class="collage">
-          <div class="photo" style="--photo-delay:0.00s"><img data-src="foto-1.jpg" width="1200" height="737" alt="Ambiente del cotillón, foto 1" loading="eager" decoding="async"></div>
-          <div class="photo" style="--photo-delay:0.07s"><img data-src="foto-2.jpg" width="1200" height="800" alt="Ambiente del cotillón, foto 2" loading="eager" decoding="async"></div>
-          <div class="photo" style="--photo-delay:0.14s"><img data-src="foto-3.jpg" width="800" height="1200" alt="Ambiente del cotillón, foto 3" loading="eager" decoding="async"></div>
-          <div class="photo" style="--photo-delay:0.21s"><img data-src="foto-4.jpg" width="1200" height="800" alt="Ambiente del cotillón, foto 4" loading="eager" decoding="async"></div>
-          <div class="photo" style="--photo-delay:0.28s"><img data-src="foto-5.jpg" width="1200" height="800" alt="Ambiente del cotillón, foto 5" loading="eager" decoding="async"></div>
-          <div class="photo" style="--photo-delay:0.35s"><img data-src="foto-6.jpg" width="1200" height="800" alt="Ambiente del cotillón, foto 6" loading="eager" decoding="async"></div>
-          <div class="photo" style="--photo-delay:0.42s"><img data-src="foto-7.jpg" width="1200" height="675" alt="Ambiente del cotillón, foto 7" loading="eager" decoding="async"></div>
-          <div class="photo" style="--photo-delay:0.49s"><img data-src="foto-8.jpg" width="1200" height="737" alt="Ambiente del cotillón, foto 8" loading="eager" decoding="async"></div>
-          <div class="photo" style="--photo-delay:0.56s"><img data-src="foto-9.jpg" width="1600" height="900" alt="Ambiente del cotillón, foto 9" loading="eager" decoding="async"></div>
-          <div class="photo" style="--photo-delay:0.63s"><img data-src="foto-10.jpg" width="1318" height="1600" alt="Ambiente del cotillón, foto 10" loading="eager" decoding="async"></div>
-          <div class="photo" style="--photo-delay:0.70s"><img data-src="foto-11.jpg" width="1600" height="900" alt="Ambiente del cotillón, foto 11" loading="eager" decoding="async"></div>
-          <div class="photo" style="--photo-delay:0.77s"><img data-src="foto-12.jpg" width="1600" height="983" alt="Ambiente del cotillón, foto 12" loading="eager" decoding="async"></div>
-          <div class="photo" style="--photo-delay:0.84s"><img data-src="foto-13.jpg" width="1600" height="900" alt="Ambiente del cotillón, foto 13" loading="eager" decoding="async"></div>
-          <div class="photo" style="--photo-delay:0.91s"><img data-src="foto-14.jpg" width="945" height="2048" alt="Ambiente del cotillón, foto 14" loading="eager" decoding="async"></div>
-          <div class="photo" style="--photo-delay:0.98s"><img data-src="foto-15.jpg" width="1179" height="1179" alt="Ambiente del cotillón, foto 15" loading="eager" decoding="async"></div>
-          <div class="photo" style="--photo-delay:1.05s"><img data-src="foto-16.jpg" width="1600" height="1200" alt="Ambiente del cotillón, foto 16" loading="eager" decoding="async"></div>
-          <div class="photo" style="--photo-delay:1.12s"><img data-src="foto-17.jpg" width="1600" height="1200" alt="Ambiente del cotillón, foto 17" loading="eager" decoding="async"></div>
-          <div class="photo" style="--photo-delay:1.19s"><img data-src="foto-18.jpg" width="1600" height="900" alt="Ambiente del cotillón, foto 18" loading="eager" decoding="async"></div>
-          <div class="photo" style="--photo-delay:1.26s"><img data-src="foto-19.jpg" width="1600" height="900" alt="Ambiente del cotillón, foto 19" loading="eager" decoding="async"></div>
-          <div class="photo" style="--photo-delay:1.33s"><img data-src="foto-20.jpg" width="900" height="1600" alt="Ambiente del cotillón, foto 20" loading="eager" decoding="async"></div>
-          <div class="photo" style="--photo-delay:1.40s"><img data-src="foto-21.jpg" width="1600" height="900" alt="Ambiente del cotillón, foto 21" loading="eager" decoding="async"></div>
-          <div class="photo" style="--photo-delay:1.40s"><img data-src="foto-22.jpg" width="1600" height="900" alt="Ambiente del cotillón, foto 22" loading="eager" decoding="async"></div>
-          <div class="photo" style="--photo-delay:1.40s"><img data-src="foto-23.jpg" width="900" height="1600" alt="Ambiente del cotillón, foto 23" loading="eager" decoding="async"></div>
+          <div class="photo" data-ratio="1.6282225237"><img data-src="foto-1.jpg" width="1200" height="737" style="left:0;top:0.00000000%;width:100%;height:100.00000000%" alt="Ambiente del cotillón, foto 1" loading="eager" decoding="async"></div>
+          <div class="photo" data-ratio="1.5000000000"><img data-src="foto-2.jpg" width="1200" height="800" style="left:0;top:0.00000000%;width:100%;height:100.00000000%" alt="Ambiente del cotillón, foto 2" loading="eager" decoding="async"></div>
+          <div class="photo" data-ratio="0.6666666667"><img data-src="foto-3.jpg" width="800" height="1200" style="left:0;top:0.00000000%;width:100%;height:100.00000000%" alt="Ambiente del cotillón, foto 3" loading="eager" decoding="async"></div>
+          <div class="photo" data-ratio="1.5000000000"><img data-src="foto-4.jpg" width="1200" height="800" style="left:0;top:0.00000000%;width:100%;height:100.00000000%" alt="Ambiente del cotillón, foto 4" loading="eager" decoding="async"></div>
+          <div class="photo" data-ratio="1.5000000000"><img data-src="foto-5.jpg" width="1200" height="800" style="left:0;top:0.00000000%;width:100%;height:100.00000000%" alt="Ambiente del cotillón, foto 5" loading="eager" decoding="async"></div>
+          <div class="photo" data-ratio="1.5000000000"><img data-src="foto-6.jpg" width="1200" height="800" style="left:0;top:0.00000000%;width:100%;height:100.00000000%" alt="Ambiente del cotillón, foto 6" loading="eager" decoding="async"></div>
+          <div class="photo" data-ratio="1.7777777778"><img data-src="foto-7.jpg" width="1200" height="675" style="left:0;top:0.00000000%;width:100%;height:100.00000000%" alt="Ambiente del cotillón, foto 7" loading="eager" decoding="async"></div>
+          <div class="photo" data-ratio="1.6282225237"><img data-src="foto-8.jpg" width="1200" height="737" style="left:0;top:0.00000000%;width:100%;height:100.00000000%" alt="Ambiente del cotillón, foto 8" loading="eager" decoding="async"></div>
+          <div class="photo" data-ratio="1.7777777778"><img data-src="foto-9.jpg" width="1600" height="900" style="left:0;top:0.00000000%;width:100%;height:100.00000000%" alt="Ambiente del cotillón, foto 9" loading="eager" decoding="async"></div>
+          <div class="photo" data-ratio="0.8237500000"><img data-src="foto-10.jpg" width="1318" height="1600" style="left:0;top:0.00000000%;width:100%;height:100.00000000%" alt="Ambiente del cotillón, foto 10" loading="eager" decoding="async"></div>
+          <div class="photo" data-ratio="1.7777777778"><img data-src="foto-11.jpg" width="1600" height="900" style="left:0;top:0.00000000%;width:100%;height:100.00000000%" alt="Ambiente del cotillón, foto 11" loading="eager" decoding="async"></div>
+          <div class="photo" data-ratio="1.6276703967"><img data-src="foto-12.jpg" width="1600" height="983" style="left:0;top:0.00000000%;width:100%;height:100.00000000%" alt="Ambiente del cotillón, foto 12" loading="eager" decoding="async"></div>
+          <div class="photo" data-ratio="1.7777777778"><img data-src="foto-13.jpg" width="1600" height="900" style="left:0;top:0.00000000%;width:100%;height:100.00000000%" alt="Ambiente del cotillón, foto 13" loading="eager" decoding="async"></div>
+          <div class="photo" data-ratio="0.5662073098"><img data-src="foto-14.jpg" width="945" height="2048" style="left:0;top:-11.38406231%;width:100%;height:122.70820851%" alt="Ambiente del cotillón, foto 14" loading="eager" decoding="async"></div>
+          <div class="photo" data-ratio="1.2129629630"><img data-src="foto-15.jpg" width="1179" height="1179" style="left:0;top:-9.46502058%;width:100%;height:121.29629630%" alt="Ambiente del cotillón, foto 15" loading="eager" decoding="async"></div>
+          <div class="photo" data-ratio="1.3333333333"><img data-src="foto-16.jpg" width="1600" height="1200" style="left:0;top:0.00000000%;width:100%;height:100.00000000%" alt="Ambiente del cotillón, foto 16" loading="eager" decoding="async"></div>
+          <div class="photo" data-ratio="1.3333333333"><img data-src="foto-17.jpg" width="1600" height="1200" style="left:0;top:0.00000000%;width:100%;height:100.00000000%" alt="Ambiente del cotillón, foto 17" loading="eager" decoding="async"></div>
+          <div class="photo" data-ratio="1.7777777778"><img data-src="foto-18.jpg" width="1600" height="900" style="left:0;top:0.00000000%;width:100%;height:100.00000000%" alt="Ambiente del cotillón, foto 18" loading="eager" decoding="async"></div>
+          <div class="photo" data-ratio="1.7777777778"><img data-src="foto-19.jpg" width="1600" height="900" style="left:0;top:0.00000000%;width:100%;height:100.00000000%" alt="Ambiente del cotillón, foto 19" loading="eager" decoding="async"></div>
+          <div class="photo" data-ratio="0.5625000000"><img data-src="foto-20.jpg" width="900" height="1600" style="left:0;top:0.00000000%;width:100%;height:100.00000000%" alt="Ambiente del cotillón, foto 20" loading="eager" decoding="async"></div>
+          <div class="photo" data-ratio="1.7777777778"><img data-src="foto-21.jpg" width="1600" height="900" style="left:0;top:0.00000000%;width:100%;height:100.00000000%" alt="Ambiente del cotillón, foto 21" loading="eager" decoding="async"></div>
+          <div class="photo" data-ratio="1.7777777778"><img data-src="foto-22.jpg" width="1600" height="900" style="left:0;top:0.00000000%;width:100%;height:100.00000000%" alt="Ambiente del cotillón, foto 22" loading="eager" decoding="async"></div>
+          <div class="photo" data-ratio="0.5625000000"><img data-src="foto-23.jpg" width="900" height="1600" style="left:0;top:0.00000000%;width:100%;height:100.00000000%" alt="Ambiente del cotillón, foto 23" loading="eager" decoding="async"></div>
         </div>
         <div class="final">Estad atentos<strong>Nos vemos muy pronto.</strong></div>
       </div>
@@ -114,6 +114,9 @@
   const discoverBtn = document.getElementById('discoverBtn');
   const collageWrap = document.getElementById('collageWrap');
   const collageImgs = [...collageWrap.querySelectorAll('img[data-src]')];
+  const collage = collageWrap.querySelector('.collage');
+  const photoTiles = [...collage.querySelectorAll('.photo')];
+  let photoPreparation = null, collageRequest = 0, collageWidth = 0;
   const bars = [];
   for (let i = 0; i < 31; i++) {
     const bar = document.createElement('span');
@@ -260,13 +263,21 @@
       if (i !== index) video.pause();
     });
     const video = videos[index];
+    updateVideoFrame(video);
     video.muted = true;
     if (reset) { try { video.currentTime = 0; } catch (_) {} }
     if (!document.hidden) video.play().catch(() => {
       // A subsequent touch or page return retries a browser-interrupted video.
     });
   }
+  function updateVideoFrame(video) {
+    if (!video.videoWidth || !video.videoHeight) return;
+    const frame = video.closest('.screen');
+    frame.style.aspectRatio = video.videoWidth + ' / ' + video.videoHeight;
+    frame.classList.toggle('landscape', video.videoWidth > video.videoHeight);
+  }
   videos.forEach((video, index) => {
+    video.addEventListener('loadedmetadata', () => { if (currentVideo === index) updateVideoFrame(video); });
     video.addEventListener('ended', () => {
       if (tuned) playVideo((index + 1) % videos.length, true);
     });
@@ -300,6 +311,67 @@
     }
   }
 
+  function preparePhotos() {
+    if (photoPreparation) return photoPreparation;
+    photoPreparation = Promise.all(collageImgs.map(img => {
+      if (!img.getAttribute('src')) img.src = img.dataset.src;
+      if (img.decode) return img.decode().catch(() => {});
+      if (img.complete) return Promise.resolve();
+      return new Promise(resolve => {
+        img.addEventListener('load', resolve, {once: true});
+        img.addEventListener('error', resolve, {once: true});
+      });
+    }));
+    return photoPreparation;
+  }
+
+  // Choose rows of complete images, each with one shared top and bottom edge.
+  function layoutCollage() {
+    const width = collage.clientWidth;
+    if (!width) return;
+    const gap = parseFloat(getComputedStyle(collage).getPropertyValue('--collage-gap')) || 10;
+    const target = width < 500 ? 140 : 200;
+    const ratios = photoTiles.map(tile => Number(tile.dataset.ratio));
+    const count = ratios.length;
+    const costs = Array(count + 1).fill(Infinity);
+    const next = Array(count).fill(count);
+    costs[count] = 0;
+    for (let first = count - 1; first >= 0; first--) {
+      let sum = 0;
+      for (let size = 1; size <= Math.min(width < 500 ? 3 : 5, count - first); size++) {
+        sum += ratios[first + size - 1];
+        const height = (width - gap * (size - 1)) / sum;
+        const cost = Math.pow(Math.log(height / target), 2) + (size === 1 ? .1 : 0) + costs[first + size];
+        if (cost < costs[first]) { costs[first] = cost; next[first] = first + size; }
+      }
+    }
+    const rows = [];
+    for (let first = 0; first < count;) {
+      const last = next[first];
+      const row = document.createElement('div');
+      row.className = 'collage-row';
+      const sum = ratios.slice(first, last).reduce((total, ratio) => total + ratio, 0);
+      row.style.height = ((width - gap * (last - first - 1)) / sum) + 'px';
+      for (let i = first; i < last; i++) {
+        const tile = photoTiles[i];
+        tile.style.flex = ratios[i] + ' 1 0px';
+        tile.dataset.row = String(rows.length);
+        row.appendChild(tile);
+      }
+      rows.push(row);
+      first = last;
+    }
+    collage.replaceChildren(...rows);
+    collageWidth = width;
+  }
+
+  if (window.ResizeObserver) {
+    const layoutObserver = new ResizeObserver(() => {
+      if (collageWrap.classList.contains('on') && Math.abs(collage.clientWidth - collageWidth) > 1) layoutCollage();
+    });
+    layoutObserver.observe(collage);
+  } else window.addEventListener('resize', () => { if (collageWrap.classList.contains('on')) layoutCollage(); });
+
   function update() {
     const value = Math.max(2023, Math.min(2029, Number(dial.value) || 2025));
     const distance = Math.abs(value - 2027);
@@ -314,10 +386,12 @@
       bar.style.opacity = String(.22 + .78 * strength);
     });
     broadcast.classList.toggle('on', tuned);
-    if (tuned && !wasTuned) playVideo(0, true);
+    if (tuned && !wasTuned) { playVideo(0, true); preparePhotos(); }
     if (!tuned && wasTuned) {
       stopAudio();
       videos.forEach(video => { video.pause(); try { video.currentTime = 0; } catch (_) {} });
+      collageRequest++;
+      discoverBtn.disabled = false;
       collageWrap.classList.remove('on');
       discoverBtn.textContent = 'Descubre el cotillón';
       discoverBtn.setAttribute('aria-expanded', 'false');
@@ -342,13 +416,27 @@
     if (soundOn) resumeAudio();
     if (tuned && videos[currentVideo].paused) playVideo(currentVideo);
   }
-  discoverBtn.addEventListener('click', () => {
-    collageImgs.forEach(img => { if (!img.getAttribute('src')) img.src = img.dataset.src; });
-    collageWrap.classList.add('on');
+  discoverBtn.addEventListener('click', async () => {
+    const request = ++collageRequest;
     discoverBtn.textContent = 'COTILLÓN 26/27';
+    discoverBtn.disabled = true;
+    await preparePhotos();
+    if (!tuned || request !== collageRequest) return;
+    collageWrap.classList.add('on');
     discoverBtn.setAttribute('aria-expanded', 'true');
+    discoverBtn.disabled = false;
+    layoutCollage();
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    setTimeout(() => collageWrap.scrollIntoView({behavior: reducedMotion ? 'auto' : 'smooth', block: 'start'}), 120);
+    if (!reducedMotion) {
+      photoTiles.forEach(tile => {
+        tile.getAnimations?.().forEach(animation => animation.cancel());
+        tile.animate?.([
+          {opacity: 0, transform: 'translateY(12px)'},
+          {opacity: 1, transform: 'translateY(0)'}
+        ], {duration: 700, delay: Math.min(Number(tile.dataset.row) * 45, 270), easing: 'cubic-bezier(.22,1,.36,1)', fill: 'backwards'});
+      });
+    }
+    requestAnimationFrame(() => collageWrap.scrollIntoView({behavior: reducedMotion ? 'auto' : 'smooth', block: 'start'}));
   });
   soundBtn.addEventListener('click', toggleSound);
   dial.addEventListener('input', () => { if (soundOn) resumeAudio(); update(); });
