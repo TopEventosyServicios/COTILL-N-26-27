@@ -127,11 +127,12 @@
     bars.push(bar);
   }
 
-  // Prime the native recording inside the first gesture, muted until 2027.
-  // Outside 2027 it advances normally: never rewind it periodically. On iOS
-  // those seeks can disturb the shared audio session, including Web Audio.
+  // Prime the native recording from the first button gesture. Its six-second
+  // silent prefix keeps the same unlocked element ready until tuning to 2027.
+  // Continuous static is supplied independently by continuous-noise.js.
   const radio = document.getElementById('signalAudio');
   const TRACK_START = 6;
+  const NOISE_REWIND = 2.5;
   let soundOn = false, tuned = false, transmitting = false;
   let currentVideo = 0, engineError = false;
   let playRequest = 0, pendingSeek = null, waitingForPlay = false;
@@ -163,7 +164,7 @@
     resumeNoise();
     engineError = false;
     waitingForPlay = true;
-    radio.muted = !tuned;
+    radio.muted = false;
     radio.controls = false;
     radio.defaultPlaybackRate = 1;
     radio.playbackRate = 1;
@@ -172,7 +173,7 @@
       restart = true;
     }
     if (restart || radio.ended) {
-      if (tuned) seekRadio(TRACK_START);
+      seekRadio(tuned ? TRACK_START : 0);
     }
     // This call must run synchronously in click/touch/keyboard handlers.
     // Loading promises and metadata callbacks must never precede it.
@@ -200,7 +201,6 @@
     if (soundOn && !engineError && radio.paused && !waitingForPlay) attemptPlay(false);
   }
   function syncAudio() {
-    radio.muted = !tuned;
     setNoise();
     if (!soundOn || document.hidden) return;
     if (tuned && !transmitting) {
@@ -214,6 +214,9 @@
     if (tuned) {
       // Native loop returns to zero; skip the silent prefix on every repeat.
       if (radio.currentTime < TRACK_START) seekRadio(TRACK_START);
+    } else if (radio.currentTime >= NOISE_REWIND) {
+      // These inaudible seeks never affect the independent static generator.
+      seekRadio(.04);
     }
   }
   radio.addEventListener('loadedmetadata', () => {
@@ -251,16 +254,11 @@
   // This source loops on the audio clock, independent of media seeks/loading.
   // Never stop/restart it at buffer boundaries: only its gain changes.
   let noiseContext = null, noiseGain = null, noiseError = false;
-  let noiseTarget = 0, noiseResuming = false;
   function prepareNoise() {
     if (noiseContext) return;
     const AudioEngine = window.AudioContext || window.webkitAudioContext;
     if (!AudioEngine) throw new Error('No se pudo iniciar el ruido de radio');
     noiseContext = new AudioEngine();
-    noiseContext.addEventListener('statechange', () => {
-      if (soundOn && !tuned && !document.hidden &&
-          (noiseContext.state === 'interrupted' || noiseContext.state === 'suspended')) resumeNoise();
-    });
     const buffer = noiseContext.createBuffer(1, noiseContext.sampleRate * 4, noiseContext.sampleRate);
     const samples = buffer.getChannelData(0);
     let seed = 2027;
@@ -282,8 +280,6 @@
     if (!noiseGain) return;
     const now = noiseContext.currentTime;
     const volume = soundOn && !tuned && !document.hidden ? 0.14 : 0;
-    if (volume === noiseTarget) return;
-    noiseTarget = volume;
     noiseGain.gain.cancelScheduledValues(now);
     noiseGain.gain.setValueAtTime(noiseGain.gain.value, now);
     noiseGain.gain.linearRampToValueAtTime(volume, now + .015);
@@ -293,13 +289,11 @@
     try {
       prepareNoise();
       noiseError = false;
-      setNoise();
-      if (noiseContext.state === 'running' || noiseResuming) return;
-      noiseResuming = true;
       // Resume inside the original gesture, before waiting for any media.
       const result = noiseContext.resume();
-      Promise.resolve(result).then(() => { noiseResuming = false; noiseError = false; setNoise(); renderStatus(); })
-        .catch(() => { noiseResuming = false; noiseError = true; renderStatus(); });
+      setNoise();
+      Promise.resolve(result).then(() => { noiseError = false; setNoise(); renderStatus(); })
+        .catch(() => { noiseError = true; renderStatus(); });
     } catch (_) { noiseError = true; renderStatus(); }
   }
 
@@ -444,8 +438,7 @@
     }
     if (!tuned && wasTuned) {
       transmitting = false;
-      radio.muted = true;
-      if (soundOn) { resumeNoise(); if (radio.paused && !waitingForPlay && !engineError) attemptPlay(false); }
+      if (soundOn) { resumeNoise(); seekRadio(0); if (radio.paused && !waitingForPlay && !engineError) attemptPlay(false); }
       videos.forEach(video => { video.pause(); try { video.currentTime = 0; } catch (_) {} });
       collageRequest++;
       discoverBtn.disabled = false;
