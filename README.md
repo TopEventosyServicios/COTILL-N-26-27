@@ -1,22 +1,24 @@
-# Cotillón 26/27 — collage alineado y vídeos revisados
+# Cotillón 26/27 — sonido oculto y vídeos más tranquilos
 
-Incluye las 23 fotos, los tres vídeos revisados y el audio corregido.
+Paquete completo para GitHub Pages: 23 fotos originales, 3 vídeos mejorados, el reproductor actualizado y el audio completo.
 
-El collage organiza las fotos en filas que ocupan todo el ancho y comparten el borde inferior. Mantiene la proporción de cada imagen. En las dos fotos que traían bandas negras se ocultan únicamente esas bandas al mostrarlas: los archivos originales se mantienen intactos y no se recorta el contenido de la foto.
+El botón Activar sonido inicia un único reproductor del navegador con el ruido de radio. Al encontrar 2027, ese mismo reproductor pasa a la grabación completa del usuario. La web conserva el audio completo; el reel corto se entrega aparte.
 
-Las fotos se preparan desde que se sintoniza 2027 y se decodifican antes de mostrar el collage, para evitar que aparezcan a saltos mientras se descargan. La entrada tiene una animación más suave. Con la opción de reducir movimiento del dispositivo, aparecen sin animación.
+Al acabar la pista, Reactivar sonido la reproduce de nuevo desde el principio. También hay un botón al final del collage para repetirla sin volver arriba. Se conserva el cierre «Estad atentos · Nos vemos muy pronto».
 
-Los dos primeros vídeos tienen una reducción suave del ruido y un pequeño ajuste de nitidez. El tercero se recupera directamente de su archivo original, sin volver a comprimirlo. El reproductor respeta el encuadre de cada vídeo y evita el aumento y recorte excesivos de la versión anterior. Los primeros vídeos originales tienen resolución de 360 × 636: la revisión mejora su presentación, pero no puede recuperar detalle que no exista en el original.
+El sonido se controla únicamente desde los botones de la web. No aparece ninguna barra ni reproductor, tampoco cuando hay que reintentar. Los tres vídeos van a 0,8 veces su velocidad original (un 20 % más despacio), conservando su calidad. El audio sigue completo y a velocidad normal. La comprobación real en Instagram debe hacerse desde el teléfono, pues también depende de la versión de la app y del navegador.
 
-El audio corregido, los textos y el botón «COTILLÓN 26/27» se mantienen.
+## Subir a GitHub
 
-## Actualizar GitHub
+1. Descomprime `Cotillon-26-27-SIN-BARRA-VIDEOS-LENTOS.zip`.
+2. Abre https://github.com/TopEventosyServicios/COTILL-N-26-27 en la pestaña Code, rama main.
+3. Pulsa Add file → Upload files.
+4. Sube los 29 archivos sueltos de este ZIP donde está el index.html actual. No subas el ZIP ni una carpeta que los envuelva.
+5. Pulsa Commit changes y espera a que termine la publicación de Pages.
+6. Para evitar una copia anterior dentro de Instagram, usa en el adhesivo Enlace:
 
-1. Descarga y descomprime `Cotillon-26-27-COLLAGE-Y-VIDEOS-MEJORADOS.zip`.
-2. Abre https://github.com/TopEventosyServicios/COTILL-N-26-27, en **Code → main**.
-3. Pulsa **Add file → Upload files**.
-4. Selecciona todos los archivos sueltos del ZIP descomprimido y súbelos donde está el `index.html` actual. No subas el ZIP ni una carpeta que envuelva los archivos.
-5. Pulsa **Commit changes** y espera a que **Actions → pages build and deployment** termine.
-6. Abre https://topeventosyservicios.github.io/COTILL-N-26-27/ en una ventana privada.
+https://topeventosyservicios.github.io/COTILL-N-26-27/?v=sin-barra-5
 
-Son 29 archivos: `index.html`, `README.md`, 23 fotos, `audio-2027-corregido.mp3` y `video-1-mejorado.mp4`, `video-2-mejorado.mp4`, `video-3-mejorado.mp4`. No necesitas borrar los archivos antiguos. Los vídeos nuevos tienen nombres diferentes para que el navegador no utilice copias anteriores. El enlace de la web sigue siendo el mismo.
+No necesitas borrar los archivos antiguos. Es importante subir el nuevo `index.html` y `audio-2027-instagram.mp3`. El ZIP completo incluye también todas las fotos y los vídeos. Si ya tienes las 23 fotos y los 3 vídeos mejorados en GitHub, basta con subir los dos archivos del ZIP de actualización `Cotillon-26-27-ACTUALIZACION-2-ARCHIVOS.zip`.
+
+Después de subir, prueba desde la historia: Activar sonido → sintonizar 2027 → escuchar el audio → al terminar, Reactivar sonido. La pista debe comenzar de nuevo.

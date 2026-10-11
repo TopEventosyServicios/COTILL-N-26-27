@@ -30,7 +30,7 @@
     @keyframes goldShine{0%,25%{left:-55%}65%,100%{left:135%}}
     @media(prefers-reduced-motion:reduce){.discover,.discover::before{animation:none!important}}
     .screen.landscape{max-width:820px;aspect-ratio:16/9}
-    [hidden]{display:none!important}.audioPanel{max-width:680px;margin:14px auto 0;text-align:center}.audioPanel audio{width:100%;max-width:420px}.audioHelp{font-size:12px;line-height:1.6;color:#dbc9a8;margin-top:10px}.audioEnd{margin:18px auto;text-align:center;color:#e4c58a;font-size:13px;line-height:1.6}.replaySound{margin:12px auto 0;display:block;min-height:46px}.final .replaySound{letter-spacing:.13em}
+    [hidden]{display:none!important}#signalAudio{display:none!important}.audioEnd{margin:18px auto;text-align:center;color:#e4c58a;font-size:13px;line-height:1.6}.replaySound{margin:12px auto 0;display:block;min-height:46px}.final .replaySound{letter-spacing:.13em}
   </style>
 </head>
 <body>
@@ -48,10 +48,7 @@
     <div class="instruction">Sintoniza la frecuencia</div>
     <div class="soundrow"><button id="soundBtn" class="pill" type="button" aria-pressed="false">Activar sonido</button></div>
 
-    <div id="audioPanel" class="audioPanel" hidden>
-      <audio id="signalAudio" preload="auto" playsinline webkit-playsinline src="audio-2027-instagram.mp3?v=instagram-native-v3"></audio>
-      <div class="audioHelp">Toca Reactivar sonido o usa el reproductor. Si Instagram sigue bloqueando el sonido, abre esta web desde su menú ··· → Abrir en el navegador.</div>
-    </div>
+    <audio id="signalAudio" hidden preload="auto" playsinline webkit-playsinline src="audio-2027-instagram.mp3?v=instagram-native-v3"></audio>
     <section class="tuner" aria-label="Sintonizador de frecuencia">
       <div id="freqRead" class="freq" aria-live="polite">2025</div>
       <label for="dial" style="position:absolute;left:-9999px">Selecciona la frecuencia</label>
@@ -138,7 +135,6 @@
   // follows. Tuning seeks the already-playing element instead of starting a
   // second asynchronous Web Audio source inside an embedded browser.
   const radio = document.getElementById('signalAudio');
-  const audioPanel = document.getElementById('audioPanel');
   const replayButtons = [...document.querySelectorAll('.replaySound')];
   const audioEnd = document.getElementById('audioEnd');
   const TRACK_START = 6;
@@ -173,6 +169,9 @@
     engineError = false;
     waitingForPlay = true;
     radio.muted = false;
+    radio.controls = false;
+    radio.defaultPlaybackRate = 1;
+    radio.playbackRate = 1;
     if (radio.error) {
       radio.load();
       restart = true;
@@ -265,6 +264,8 @@
     const video = videos[index];
     updateVideoFrame(video);
     video.muted = true;
+    video.defaultPlaybackRate = 0.8;
+    video.playbackRate = 0.8;
     if (reset) { try { video.currentTime = 0; } catch (_) {} }
     if (!document.hidden) video.play().catch(() => {
       // A subsequent touch or page return retries a browser-interrupted video.
@@ -277,6 +278,8 @@
     frame.classList.toggle('landscape', video.videoWidth > video.videoHeight);
   }
   videos.forEach((video, index) => {
+    video.defaultPlaybackRate = 0.8;
+    video.playbackRate = 0.8;
     video.addEventListener('loadedmetadata', () => { if (currentVideo === index) updateVideoFrame(video); });
     video.addEventListener('ended', () => {
       if (tuned) playVideo((index + 1) % videos.length, true);
@@ -298,8 +301,7 @@
     soundBtn.textContent = !soundOn ? 'Activar sonido' :
       (ended || blocked || (radio.paused && !waitingForPlay) ? 'Reactivar sonido' :
         (waitingForPlay ? 'Preparando sonido…' : 'Silenciar sonido'));
-    audioPanel.hidden = !blocked;
-    radio.controls = blocked;
+    radio.controls = false;
     audioEnd.hidden = !ended;
     replayButtons.forEach(button => { button.hidden = !ended; });
     if (tuned) {
